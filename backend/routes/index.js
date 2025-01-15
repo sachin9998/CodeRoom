@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { signUp } from "../controllers/userController.js";
+import { createProj, login, signUp } from "../controllers/userController.js";
 var router = Router();
 
 /* GET home page. */
@@ -8,5 +8,8 @@ router.get("/", function (req, res, next) {
 });
 
 router.post("/signUp", signUp);
+router.post("/login", login);
+
+router.post("/createProj", createProj);
 
 export default router;
