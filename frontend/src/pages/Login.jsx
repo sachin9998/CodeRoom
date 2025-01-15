@@ -1,15 +1,42 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { api_base_url } from "../helper";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const submitForm = (e) => {
+    e.preventDefault();
+    fetch(api_base_url + "/login", {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("isLoggedIn", true);
+          window.location.href = "/";
+        } else {
+          toast.error(data.msg);
+        }
+      });
+  };
+
   return (
     <>
       <div className="flex flex-col items-center justify-center min-h-screen">
         <form
-          // onSubmit={submitForm}
+          onSubmit={submitForm}
           className="min-w-[350px] w-[25vw] h-[auto] flex flex-col items-center bg-[#0f0e0e] p-[20px] rounded-lg shadow-xl shadow-black/50"
         >
           <img

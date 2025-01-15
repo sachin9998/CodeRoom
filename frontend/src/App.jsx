@@ -1,7 +1,7 @@
+import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-// import Editor from "./pages/Editor";
-import { Toaster } from "react-hot-toast";
+import Editor from "./pages/Editor";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NoPage from "./pages/NoPage";
@@ -24,10 +24,7 @@ const RouteHandler = () => {
       <Route path="/" element={<Home />} />
       <Route path="/signUp" element={<Signup />} />
       <Route path="/login" element={<Login />} />
-      {/* <Route
-        path="/editior/:id"
-        element={isLoggedIn ? <Editor /> : <Navigate to={"/login"} />}
-      /> */}
+      <Route path="/editior/:id" element={<Editor />} />
       <Route path="*" element={<NoPage />} />
     </Routes>
   );

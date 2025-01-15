@@ -10,6 +10,7 @@ body {
   width: 100%;
   margin-top: 10px;
   border-radius: 30px;
+  padding: 0px 10px;
 }
 
 .inputBox input {
@@ -29,4 +30,22 @@ body {
   outline: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.projects .project {
+  margin-top: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  border: none;
+}
+
+.projects .project:hover {
+  background-color: #000000;
+  border: 1px solid #0f0e0e;
+}
+
+.css-b62m3t-container {
+  width: 100% !important;
+  margin-top: 10px;
+  border-radius: 30px;
 }

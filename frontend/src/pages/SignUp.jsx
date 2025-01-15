@@ -1,6 +1,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { api_base_url } from "../helper.js";
 
 const Signup = () => {
   const [fullName, setFullName] = useState("");
@@ -12,27 +13,28 @@ const Signup = () => {
   const submitForm = (e) => {
     e.preventDefault();
 
-    // fetch(api_base_url + "/signUp", {
-    //   mode: "cors",
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
+    fetch(api_base_url + "/signUp", {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
 
-    //   body: JSON.stringify({
-    //     fullName: fullName,
-    //     email: email,
-    //     password: password,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     if (data.success) {
-    //       navigate("/login");
-    //     } else {
-    //       toast.error(data.message);
-    //     }
-    //   });
+      body: JSON.stringify({
+        fullName: fullName,
+        email: email,
+        password: password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          toast.success("Signup Successfull");
+          navigate("/login");
+        } else {
+          toast.error(data.message);
+        }
+      });
   };
 
   return (
