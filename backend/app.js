@@ -8,6 +8,8 @@ import path from "path";
 import indexRouter from "./routes/index.js";
 import usersRouter from "./routes/users.js";
 
+import connectDB from "./config/db.js";
+
 const app = express();
 
 // __dirname equivalent in ES Modules
@@ -42,6 +44,11 @@ app.use((err, req, res, next) => {
   // render the error page
   res.status(err.status || 500);
   res.render("error");
+});
+
+app.listen(4000, (req, res) => {
+  console.log("Server is running on port 4000");
+  connectDB();
 });
 
 export default app;

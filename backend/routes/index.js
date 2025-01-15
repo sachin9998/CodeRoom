@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { signUp } from "../controllers/userController";
+import { signUp } from "../controllers/userController.js";
 var router = Router();
 
 /* GET home page. */
