@@ -232,3 +232,30 @@ export const getProject = async (req, res) => {
     });
   }
 };
+
+export const deleteProject = async (req, res) => {
+  try {
+    let { token, projectId } = req.body;
+    let decoded = jwt.verify(token, secret);
+    let user = await User.findOne({ _id: decoded.userId });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        msg: "User not found",
+      });
+    }
+
+    let project = await Project.findOneAndDelete({ _id: projectId });
+
+    return res.status(200).json({
+      success: true,
+      msg: "Project deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      msg: error.message,
+    });
+  }
+};

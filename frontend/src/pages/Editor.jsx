@@ -1,9 +1,83 @@
 import Editor2 from "@monaco-editor/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { api_base_url } from "../helper";
 
 const Editor = () => {
   const [code, setCode] = useState(""); // State to hold the code
+  const { id } = useParams(); // Extract project ID from URL params
+  const [output, setOutput] = useState("");
+  const [error, setError] = useState(false);
+
+  const [data, setData] = useState(null);
+
+  // Fetch project data on mount
+  useEffect(() => {
+    fetch(`${api_base_url}/getProject`, {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: localStorage.getItem("token"),
+        projectId: id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setCode(data.project.code); // Set the fetched code
+          setData(data.project);
+        } else {
+          toast.error(data.msg);
+        }
+      })
+      .catch((err) => {
+        console.error("Error fetching project:", err);
+        toast.error("Failed to load project.");
+      });
+  }, [id]);
+
+  const runProject = () => {
+    fetch("https://emkc.org/api/v2/piston/execute", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        language: data.projLanguage,
+        version: data.version,
+        files: [
+          {
+            filename:
+              data.name + data.projLanguage === "python"
+                ? ".py"
+                : data.projLanguage === "java"
+                ? ".java"
+                : data.projLanguage === "javascript"
+                ? ".js"
+                : data.projLanguage === "c"
+                ? ".c"
+                : data.projLanguage === "cpp"
+                ? ".cpp"
+                : data.projLanguage === "bash"
+                ? ".sh"
+                : "",
+            content: code,
+          },
+        ],
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setOutput(data.run.output);
+        setError(data.run.code === 1 ? true : false);
+      });
+  };
 
   return (
     <>
