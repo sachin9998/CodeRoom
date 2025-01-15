@@ -1,23 +1,59 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const submitForm = (e) => {
+    e.preventDefault();
+
+    // fetch(api_base_url + "/signUp", {
+    //   mode: "cors",
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+
+    //   body: JSON.stringify({
+    //     fullName: fullName,
+    //     email: email,
+    //     password: password,
+    //   }),
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     if (data.success) {
+    //       navigate("/login");
+    //     } else {
+    //       toast.error(data.message);
+    //     }
+    //   });
+  };
+
   return (
     <>
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <form className="min-w-[25vw] h-[auto] flex flex-col items-center bg-[#0f0e0e] p-[20px] rounded-lg shadow-xl shadow-black/50">
+        <form
+          onSubmit={submitForm}
+          className="min-w-[350px] w-[25vw] h-[auto] flex flex-col items-center bg-[#0f0e0e] p-[20px] rounded-lg shadow-xl shadow-black/50"
+        >
           <img
-            className="w-[220px] m-5 object-cover"
+            className="w-[220px] object-cover"
             src="./logo.png"
             alt="codeRoom Logo"
           />
 
           <div className="inputBox">
             <input
-              //   onChange={(e) => {
-              //     setFullName(e.target.value);
-              //   }}
-              //   value={fullName}
+              onChange={(e) => {
+                setFullName(e.target.value);
+              }}
+              value={fullName}
               type="text"
               placeholder="Full Name"
               required
@@ -26,10 +62,10 @@ const Signup = () => {
 
           <div className="inputBox">
             <input
-              //   onChange={(e) => {
-              //     setEmail(e.target.value);
-              //   }}
-              //   value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              value={email}
               type="email"
               placeholder="Email"
               required
@@ -38,10 +74,10 @@ const Signup = () => {
 
           <div className="inputBox">
             <input
-              //   onChange={(e) => {
-              //     setPwd(e.target.value);
-              //   }}
-              //   value={pwd}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              value={password}
               type="password"
               placeholder="Password"
               required

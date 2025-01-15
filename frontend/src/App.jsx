@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 // import Editor from "./pages/Editor";
+import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NoPage from "./pages/NoPage";
@@ -9,6 +10,7 @@ import Signup from "./pages/Signup";
 const App = () => {
   return (
     <BrowserRouter>
+      <Toaster />
       <RouteHandler />
     </BrowserRouter>
   );
