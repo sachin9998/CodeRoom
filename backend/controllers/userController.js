@@ -136,12 +136,12 @@ export const createProj = async (req, res) => {
 export const saveProject = async (req, res) => {
   try {
     let { token, projectId, code } = req.body;
-    
+
     console.log("DATA: ", token, projectId, code);
 
     let decoded = jwt.verify(token, secret);
-    
-    let user = await userModel.findOne({ _id: decoded.userId });
+
+    let user = await User.findOne({ _id: decoded.userId });
 
     if (!user) {
       return res.status(404).json({
@@ -150,7 +150,7 @@ export const saveProject = async (req, res) => {
       });
     }
 
-    let project = await projectModel.findOneAndUpdate(
+    let project = await Project.findOneAndUpdate(
       { _id: projectId },
       { code: code }
     );
@@ -161,6 +161,35 @@ export const saveProject = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({
+      success: false,
+      msg: error.message,
+    });
+  }
+};
+
+export const getProjects = async (req, res) => {
+  try {
+    let { token } = req.body;
+    let decoded = jwt.verify(token, secret);
+
+    let user = await User.findOne({ _id: decoded.userId });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        msg: "User not found",
+      });
+    }
+
+    let projects = await Project.find({ createdBy: user._id });
+
+    return res.status(200).json({
+      success: true,
+      msg: "Projects fetched successfully",
+      projects: projects,
+    });
+  } catch (error) {
     return res.status(500).json({
       success: false,
       msg: error.message,
