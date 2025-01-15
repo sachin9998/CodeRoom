@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createProj,
+  getProject,
   getProjects,
   login,
   saveProject,
@@ -20,5 +21,6 @@ router.post("/createProj", createProj);
 router.post("/saveProject", saveProject);
 
 router.get("/getProjects", getProjects);
+router.get("/getProject", getProject);
 
 export default router;
