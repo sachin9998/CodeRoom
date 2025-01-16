@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 app.use(
   cors({
-    origin: "https://https://coderoom-five.vercel.app/",
+    origin: "https://coderoom-five.vercel.app/",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
