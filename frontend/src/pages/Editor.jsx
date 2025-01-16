@@ -89,6 +89,8 @@ const Editor = () => {
   }, [code]); // Reattach when `code` changes
 
   const runProject = () => {
+    saveProject();
+
     fetch("https://emkc.org/api/v2/piston/execute", {
       method: "POST",
       headers: {

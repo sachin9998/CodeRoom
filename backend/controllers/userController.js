@@ -296,7 +296,7 @@ export const editProject = async (req, res) => {
   try {
     let { token, projectId, name } = req.body;
     let decoded = jwt.verify(token, secret);
-    let user = await userModel.findOne({ _id: decoded.userId });
+    let user = await User.findOne({ _id: decoded.userId });
 
     if (!user) {
       return res.status(404).json({
@@ -305,7 +305,7 @@ export const editProject = async (req, res) => {
       });
     }
 
-    let project = await projectModel.findOne({ _id: projectId });
+    let project = await Project.findOne({ _id: projectId });
     if (project) {
       project.name = name;
       await project.save();
