@@ -10,6 +10,7 @@ const Editor = () => {
   const { id } = useParams(); // Extract project ID from URL params
   const [output, setOutput] = useState("");
   const [error, setError] = useState(false);
+
   const [data, setData] = useState(null);
 
   // Fetch project data on mount
@@ -39,6 +40,53 @@ const Editor = () => {
         toast.error("Failed to load project.");
       });
   }, [id]);
+
+  // Save project function
+  const saveProject = () => {
+    const trimmedCode = code?.toString().trim(); // Ensure code is a string and trimmed
+    console.log("Saving code:", trimmedCode); // Debug log
+
+    fetch(`${api_base_url}/saveProject`, {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: localStorage.getItem("token"),
+        projectId: id,
+        code: trimmedCode, // Use the latest code state
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          toast.success(data.msg);
+        } else {
+          toast.error(data.msg);
+        }
+      })
+      .catch((err) => {
+        console.error("Error saving project:", err);
+        toast.error("Failed to save the project.");
+      });
+  };
+
+  // Shortcut handler for saving with Ctrl+S
+  const handleSaveShortcut = (e) => {
+    if (e.ctrlKey && e.key === "s") {
+      e.preventDefault(); // Prevent browser's default save behavior
+      saveProject(); // Call the save function
+    }
+  };
+
+  // Add and clean up keyboard event listener
+  useEffect(() => {
+    window.addEventListener("keydown", handleSaveShortcut);
+    return () => {
+      window.removeEventListener("keydown", handleSaveShortcut);
+    };
+  }, [code]); // Reattach when `code` changes
 
   const runProject = () => {
     fetch("https://emkc.org/api/v2/piston/execute", {
@@ -80,15 +128,11 @@ const Editor = () => {
 
   return (
     <>
-      
       <Navbar />
-      
       <div
         className="flex items-center justify-between"
         style={{ height: "calc(100vh - 90px)" }}
       >
-
-        {/* Left side for editor */}
         <div className="left w-[50%] h-full">
           <Editor2
             onChange={(newCode) => {
@@ -102,14 +146,9 @@ const Editor = () => {
             value={code} // Bind editor to state
           />
         </div>
-
-        {/* Right Side for Output */}
         <div className="right p-[15px] w-[50%] h-full bg-[#27272a]">
-          
           <div className="flex pb-3 border-b-[1px] border-b-[#1e1e1f] items-center justify-between px-[30px]">
-            
             <p className="p-0 m-0">Output</p>
-            
             <button
               className="btnNormal !w-fit !px-[20px] bg-blue-500 transition-all hover:bg-blue-600"
               onClick={runProject} // Save when clicking the button
@@ -117,7 +156,6 @@ const Editor = () => {
               Run
             </button>
           </div>
-
           <pre
             className={`w-full h-[75vh] ${error ? "text-red-500" : ""}`}
             style={{ textWrap: "nowrap" }}

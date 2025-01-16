@@ -6,22 +6,54 @@ import { User } from "../models/user.model.js";
 const secret = "test12341234";
 
 function getStartupCode(language) {
-  if (language.toLowerCase() === "python") {
-    return 'print("Hello World")';
-  } else if (language.toLowerCase() === "java") {
-    return 'public class Main { public static void main(String[] args) { System.out.println("Hello World"); } }';
-  } else if (language.toLowerCase() === "javascript") {
-    return 'console.log("Hello World");';
-  } else if (language.toLowerCase() === "cpp") {
-    return '#include <iostream>\n\nint main() {\n    std::cout << "Hello World" << std::endl;\n    return 0;\n}';
-  } else if (language.toLowerCase() === "c") {
-    return '#include <stdio.h>\n\nint main() {\n    printf("Hello World\\n");\n    return 0;\n}';
-  } else if (language.toLowerCase() === "go") {
-    return 'package main\n\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello World")\n}';
-  } else if (language.toLowerCase() === "bash") {
-    return 'echo "Hello World"';
-  } else {
-    return "Language not supported";
+  switch (language.toLowerCase()) {
+    case "python":
+      return `print("Hello World")`;
+
+    case "java":
+      return `
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello World");
+    }
+}`;
+
+    case "javascript":
+      return `console.log("Hello World");`;
+
+    case "cpp":
+      return `
+#include <iostream>
+
+int main() {
+    std::cout << "Hello World" << std::endl;
+    return 0;
+}`;
+
+    case "c":
+      return `
+#include <stdio.h>
+
+int main() {
+    printf("Hello World\\n");
+    return 0;
+}`;
+
+    case "go":
+      return `
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello World")
+}`;
+
+    case "bash":
+      return `echo "Hello World"`;
+
+    default:
+      return "Language not supported";
   }
 }
 
@@ -287,6 +319,35 @@ export const editProject = async (req, res) => {
         msg: "Project not found",
       });
     }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      msg: error.message,
+    });
+  }
+};
+
+export const getUserInfo = async (req, res) => {
+  try {
+    let { token } = req.body;
+    let decoded = jwt.verify(token, secret);
+
+    let user = await User.findOne({ _id: decoded.userId }).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        msg: "User not found",
+      });
+    }
+
+    console.log("Fetched USER", user);
+
+    return res.status(200).json({
+      success: true,
+      msg: "User fetched successfully",
+      user: user,
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,

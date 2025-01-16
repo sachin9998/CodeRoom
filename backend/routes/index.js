@@ -5,6 +5,7 @@ import {
   editProject,
   getProject,
   getProjects,
+  getUserInfo,
   login,
   saveProject,
   signUp,
@@ -28,5 +29,7 @@ router.post("/getProject", getProject);
 
 router.post("/deleteProject", deleteProject);
 router.post("/editProject", editProject);
+
+router.post("/getUserInfo", getUserInfo);
 
 export default router;

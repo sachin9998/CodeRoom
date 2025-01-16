@@ -1,4 +1,4 @@
-import { useEffect, useState, version } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
@@ -14,6 +14,7 @@ const Home = () => {
   const [name, setName] = useState("");
   const [projects, setProjects] = useState(null);
   const [editProjId, setEditProjId] = useState("");
+  const [userInfo, setUserInfo] = useState(null);
 
   const getRunTimes = async () => {
     let res = await fetch("https://emkc.org/api/v2/piston/runtimes");
@@ -172,7 +173,29 @@ const Home = () => {
       });
   };
 
+  const getUserInfo = () => {
+    fetch(api_base_url + "/getUserInfo", {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: localStorage.getItem("token"),
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setUserInfo(data.user);
+        } else {
+          toast.error(data.msg);
+        }
+      });
+  };
+
   useEffect(() => {
+    getUserInfo();
     getProjects();
     getRunTimes();
   }, []);
@@ -181,7 +204,7 @@ const Home = () => {
     <>
       <Navbar />
       <div className="flex items-center px-[100px] justify-between mt-5">
-        <h3 className="text-2xl">👋 Hi, Mahdi</h3>
+        <h3 className="text-2xl">👋 Hi, {userInfo?.fullName}</h3>
         <div className="flex items-center">
           <button
             onClick={() => {
@@ -201,7 +224,7 @@ const Home = () => {
                 <>
                   <div
                     key={project.id}
-                    className="project w-full p-[15px] flex items-center justify-between bg-[#0f0e0e]"
+                    className="project rounded-md w-full p-[15px] flex items-center justify-between bg-[#0f0e0e]"
                   >
                     <div
                       onClick={() => {

@@ -39,9 +39,14 @@ body {
   border: none;
 }
 
-.projects .project:hover {
+.projects {
   background-color: #000000;
-  border: 1px solid #0f0e0e;
+  border-radius: 10px;
+}
+
+.project:hover {
+  border: 1px solid #0f0e0e !important;
+  /* z-index: 999; */
 }
 
 .css-b62m3t-container {
