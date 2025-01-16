@@ -28,13 +28,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(cors());
-app.use(
-  cors({
-    origin: "https://coderoom-five.vercel.app/",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
