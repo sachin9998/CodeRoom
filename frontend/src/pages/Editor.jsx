@@ -10,7 +10,6 @@ const Editor = () => {
   const { id } = useParams(); // Extract project ID from URL params
   const [output, setOutput] = useState("");
   const [error, setError] = useState(false);
-
   const [data, setData] = useState(null);
 
   // Fetch project data on mount
@@ -81,11 +80,14 @@ const Editor = () => {
 
   return (
     <>
+      
       <Navbar />
+      
       <div
         className="flex items-center justify-between"
         style={{ height: "calc(100vh - 90px)" }}
       >
+
         {/* Left side for editor */}
         <div className="left w-[50%] h-full">
           <Editor2
@@ -103,8 +105,11 @@ const Editor = () => {
 
         {/* Right Side for Output */}
         <div className="right p-[15px] w-[50%] h-full bg-[#27272a]">
+          
           <div className="flex pb-3 border-b-[1px] border-b-[#1e1e1f] items-center justify-between px-[30px]">
+            
             <p className="p-0 m-0">Output</p>
+            
             <button
               className="btnNormal !w-fit !px-[20px] bg-blue-500 transition-all hover:bg-blue-600"
               onClick={runProject} // Save when clicking the button
@@ -112,6 +117,7 @@ const Editor = () => {
               Run
             </button>
           </div>
+
           <pre
             className={`w-full h-[75vh] ${error ? "text-red-500" : ""}`}
             style={{ textWrap: "nowrap" }}
