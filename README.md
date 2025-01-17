@@ -1,6 +1,8 @@
-# Online Code Compiler (MERN Stack)
+# CodeRoom - Online Code Compiler
 
 An online code compiler platform that supports multiple programming languages such as Java, C, C++, JavaScript, and Python. Users can create accounts, manage projects, write and compile code, and save their work for future reference.
+
+- Live Link: https://coderoombysachin.vercel.app/
 
 ## Features
 
@@ -29,6 +31,17 @@ An online code compiler platform that supports multiple programming languages su
 
 - **Frontend**: Deployed on Vercel.
 - **Backend**: Deployed on Render.
+
+## Screenshots
+![Screenshot 2025-01-17 at 6 36 58 PM](https://github.com/user-attachments/assets/47475fd6-a8a1-4cbc-b13f-603cb5545431)
+Login Page
+
+![Screenshot 2025-01-17 at 6 37 51 PM](https://github.com/user-attachments/assets/270b4930-03f7-4449-8695-329cd6f5dcac)
+User Dashboard
+
+![Screenshot 2025-01-17 at 6 39 01 PM](https://github.com/user-attachments/assets/50dbc547-093c-40e0-b210-1f2b73efdc75)
+Code Compiler
+
 
 ## API Endpoints
 
@@ -129,7 +142,7 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 ## Contact
 
-For any queries or issues, feel free to contact me at your-email@example.com.
+For any queries or issues, feel free to contact me at sachinalam9998@gmail.com.
 
 ---
 
