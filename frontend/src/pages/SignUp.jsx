@@ -10,32 +10,91 @@ const Signup = () => {
 
   const navigate = useNavigate();
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
 
-    fetch(api_base_url + "/signUp", {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+    try {
+      if (!fullName || !email || !password) {
+        toast.error("All fields are required!");
+        return;
+      }
 
-      body: JSON.stringify({
-        fullName: fullName,
-        email: email,
-        password: password,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          toast.success("Signup Successfull");
-          navigate("/login");
-        } else {
-          toast.error(data.message);
-        }
+      if (password.length < 6) {
+        toast.error("Password should be at least 6 characters long.");
+        return;
+      }
+
+      const response = await fetch(`${api_base_url}/signUp`, {
+        mode: "cors",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName,
+          email,
+          password,
+        }),
       });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong!");
+      }
+
+      if (data.success) {
+        toast.success("Signup successful!");
+        navigate("/login");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      if (error.message.includes("User already exists")) {
+        toast.error("User with this email already exists!");
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Signup error:", error);
+    }
   };
+
+  // const submitForm = (e) => {
+  //   e.preventDefault();
+
+  //   if (fullName === "" || email === "" || password == "") {
+  //     toast.error("All Fields are required!");
+  //     return;
+  //   }
+
+  //   if (password.length < 6) {
+  //     toast.error("Password Should be greater than 6 Characters.");
+  //     return;
+  //   }
+
+  //   fetch(api_base_url + "/signUp", {
+  //     mode: "cors",
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+
+  //     body: JSON.stringify({
+  //       fullName: fullName,
+  //       email: email,
+  //       password: password,
+  //     }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if (data.success) {
+  //         toast.success("Signup Successfull");
+  //         navigate("/login");
+  //       } else {
+  //         toast.error(data.message);
+  //       }
+  //     });
+  // };
 
   return (
     <>
